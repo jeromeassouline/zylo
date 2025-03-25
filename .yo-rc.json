@@ -1,0 +1,15 @@
+{
+  "generator-sicarator": {
+    "promptValues": {
+      "authorName": "Jerome",
+      "authorEmail": "jerome.assouline@theodo.com",
+      "ci": ".github",
+      "includeApi": false,
+      "includeDvc": false,
+      "includeStreamlit": true
+    },
+    "projectName": "zylo",
+    "projectSlug": "zylo",
+    "projectDescription": "POC Snowflake for Zylo"
+  }
+}
