@@ -31,7 +31,6 @@ def build_df(
     title_col: str = "Titre",
     sort_order: str = "asc",
 ) -> pd.DataFrame:
-    """Construit un DataFrame résumé selon les colonnes choisies."""
     try:
         df[value_col] = pd.to_numeric(df[value_col], errors="coerce")
         grouped = df.groupby(group_by)
@@ -40,7 +39,8 @@ def build_df(
         )
         summary_df["CA_moyen_par_titre"] = (
             summary_df["CA_total"] / summary_df["nb_titres"]
-        )
+        ).round(2)
+        summary_df["CA_total"] = summary_df["CA_total"].round(2)
         summary_df = summary_df.sort_index(ascending=(sort_order == "asc"))
         return summary_df.reset_index()
     except KeyError as e:
@@ -57,10 +57,34 @@ def display_summary(
 ) -> None:
     """Display title, dataframe and corresponding graph."""
     st.subheader(titre)
+    if label_col == "Period":
+        df[label_col] = pd.to_datetime(df[label_col], errors="coerce")
+        df = df.sort_values(label_col)
     st.dataframe(df)
 
     if graph_type == "bar":
-        fig = px.bar(df, x=label_col, y=value_col, text_auto=True)
+        if label_col == "Period":
+            df[label_col] = pd.to_datetime(df[label_col], errors="coerce")
+            df = df.sort_values(label_col)
+
+            fig = px.bar(
+                df,
+                x=label_col,
+                y="CA_total",
+                text_auto=True,
+                labels={"CA_total": "CA total"},
+            )
+            fig.add_scatter(
+                x=df[label_col],
+                y=df["CA_moyen_par_titre"],
+                mode="lines+markers",
+                name="CA moyen par titre",
+                yaxis="y2",
+            )
+
+        else:
+            fig = px.bar(df, x=label_col, y=value_col, text_auto=True)
+
     elif graph_type == "pie":
         fig = px.pie(df, names=label_col, values=value_col, hole=0.3)
 
