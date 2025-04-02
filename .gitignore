@@ -20,3 +20,9 @@ __pycache__/
 
 # env variables
 .env
+
+# Data
+data/*
+
+# Notebooks
+*.ipynb_checkpoints
