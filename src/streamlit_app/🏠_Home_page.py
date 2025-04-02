@@ -1,7 +1,10 @@
 """Home page of the Streamlit app."""
 
+import sys
+
 import streamlit as st
 
+sys.path.append(".")
 from src.streamlit_app.utils.set_page_config import set_page_config
 
 
