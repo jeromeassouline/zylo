@@ -23,6 +23,7 @@ __pycache__/
 
 # Data
 data/*
+!data/data_conso.csv
 
 # Notebooks
 *.ipynb_checkpoints
